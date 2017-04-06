@@ -292,6 +292,13 @@ class CodeGenerator(
           List(s"$inputTypeTerm1 $input1Term = ($inputTypeTerm1) _in1;",
                s"$inputTypeTerm2 $input2Term = ($inputTypeTerm2) _in2;"))
       }
+      else if (clazz == classOf[FilterFunction[_]]) {
+        val baseClass = classOf[RichFilterFunction[_]]
+        val inputTypeTerm = boxedTypeTermForTypeInfo(input1)
+        (baseClass,
+          s"boolean filter(Object _in1)",
+          List(s"$inputTypeTerm $input1Term = ($inputTypeTerm) _in1;"))
+      }
       else {
         // TODO more functions
         throw new CodeGenException("Unsupported Function.")
